@@ -1,6 +1,6 @@
 'use client'
 import useSWR from 'swr'
-import React, { useMemo } from 'react'
+import React from 'react'
 import RGL, { WidthProvider } from "react-grid-layout";
 const ReactGridLayout = WidthProvider(RGL);
 import { map, range } from 'lodash'
