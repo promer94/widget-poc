@@ -4,22 +4,11 @@ import React from 'react'
 import RGL, { WidthProvider } from "react-grid-layout";
 const ReactGridLayout = WidthProvider(RGL);
 import { map, range } from 'lodash'
-
-const treverse = (data: React.ReactElement | null) => {
-	if(!data) return null
-	return {
-		...data, '$$typeof': Symbol.for('react.element'), 
-		_store: { validated: true },
-		props: {
-			...data.props,
-			children: Array.isArray(data.props?.children) ? data.props.children.map(treverse) : data.props?.children
-		}
-	}
-}
-
+import Component from './component';
+import { buildReactElement } from './utils';
 const Widget = () => {
 	const { data: pureJson } = useSWR('/api/widget', (url) => fetch(url).then((res) => res.json()))
-	return treverse(pureJson)
+	return buildReactElement(pureJson)
 }
 const dom = map(range(2), (i) => {
 	return (
@@ -40,6 +29,8 @@ const layout = map(new Array(2), function (_, i) {
 	};
 });
 export default function Home() {
+	const { data } = useSWR('foo', Component)
+	console.log('result', data)
 	return (
 		<ReactGridLayout
 			layout={layout}
